@@ -20,9 +20,10 @@ t_data = read.csv("~/Desktop/STAT 240/Data/employment-overall.csv")
 ```
 Introduction:
 
-
-
-
+As students in economics and data science, our group was interested in how certain demographics were impacted by changes in the American economy throughout history, specifically women. Our group was curious about the status of women in the workforce compared to men and how we could use the lessons we learned in Statistics 240 to better understand the economic changes the women of this nation experienced. In the project we wanted to ask ourselves: how has the employment and unemployment rate changed among women when compared to American society as a whole? 
+- Firstly we
+- Secondly we
+- Finally, we
 
 Background: 
 About the raw data:

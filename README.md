@@ -73,3 +73,31 @@ t_stat > upper_limit | t_stat < lower_limit ~ TRUE,
 TRUE ~ FALSE))
 print(results_tibble)
 ``
+
+w_men_data = read.csv("../data/labor.csv")
+
+recent_data = w_men_data %>%
+  filter(Time.Year >= max(Time.Year) - 50)
+
+employment_data = recent_data %>%
+  select(Time.Year, Data.Employed.White.Counts.Men, Data.Employed.White.Counts.Women) %>%
+  pivot_longer(cols = c("Data.Employed.White.Counts.Men", "Data.Employed.White.Counts.Women"), 
+               names_to = "Gender", values_to = "Employment") %>%
+  mutate(Gender = recode(Gender, 
+                         "Data.Employed.White.Counts.Men" = "White Men", 
+                         "Data.Employed.White.Counts.Women" = "White Women"))
+
+employment_graph = ggplot(employment_data, aes(x = Time.Year, y = Employment, color = Gender)) +
+  geom_line() +
+  scale_color_manual(values = c("White Men" = "blue", "White Women" = "purple")) + # Changed colors
+  labs(title = "Employment Comparison Between White Women and White Men (Last 50 Years)",
+       x = "Year", y = "Employment Counts") +
+  theme_minimal()
+
+employment_graph
+
+```
+
+> The graph depicts the employment trends for white men and women over the past 50 years, showing a consistent increase in employment for both groups. While white men's employment remains higher, both trends parallel each other, indicating proportional growth without a closing gap.
+
+(Franco)

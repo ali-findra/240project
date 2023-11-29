@@ -97,17 +97,17 @@ employment_graph
 ```
 ```{r, echo=FALSE}
 2correlation_coefficient = cor(Data.Employed.White.Employment-Population Ratio.Women, Time.Year)
-2degrees_freedom = nrow(plot_data)
+2degrees_freedom = nrow(employment_data)
 2alpha = 0.05
-2t_stat = (correlation_coefficent *sqrt(degrees_freedom)/sqrt(1-correlation_coefficent^2))
-2upper_limit = qt(1- alpha/2, degrees_freedom)
-2lower_limit = upper_limit
+2t_stat = (2correlation_coefficent *sqrt(2degrees_freedom)/sqrt(1-2correlation_coefficent^2))
+2upper_limit = qt(1- 2alpha/2, 2degrees_freedom)
+2lower_limit = 2upper_limit
 results = tibble(
 t_stat = t_stat,
-upper_limit = upper_limit,
-lower_limit = lower_limit,
+2upper_limit = 2upper_limit,
+2lower_limit = 2lower_limit,
 reject_null_hypothesis = case_when(
-t_stat > upper_limit | t_stat < lower_limit ~ TRUE,
+2t_stat > 2upper_limit | 2t_stat < 2lower_limit ~ TRUE,
 TRUE ~ FALSE))
 print(results_tibble)
 ```

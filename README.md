@@ -55,3 +55,21 @@ ggplot(plot_data, aes(x = years)) +
   theme_minimal()
 ```
 
+```{r, echo=FALSE}
+correlation_coefficient = cor(employed_black_ratio_women, Time.Year)
+degrees_freedom = nrow(plot_data)
+alpha = 0.05
+t_stat = (correlation_coefficent *sqrt(degrees_freedom)/sqrt(1-correlation_coefficent^2))
+upper_limit = qt(1- alpha/2, degrees_freedom)
+lower_limit = upper_limit
+```
+```{r, echo=FALSE}
+results = tibble(
+t_stat = t_stat,
+upper_limit = upper_limit,
+lower_limit = lower_limit,
+reject_null_hypothesis = case_when(
+t_stat > upper_limit | t_stat < lower_limit ~ TRUE,
+TRUE ~ FALSE))
+print(results_tibble)
+``

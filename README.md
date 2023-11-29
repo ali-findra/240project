@@ -36,4 +36,22 @@ Women and men employment rate in the USA: " by Austin Cory Bart, created 3/11/20
 Some focus:
 Our first focus is the trend of total employment rate for white male vs. female over time. We also tries to see the differnce btw. the black male and female employment rate differnce over the past few decades. Our second focus is on trying to prove the hypothes of that, " What is the rate of the population over 40 is unemployed. 
 
+This is the ratio, the employments counts is the major part, this is just my extension explanation.
+```{r, echo=FALSE}
+employed_black_ratio_men = labor_data$Data.Employed.Black.or.African.American.Employment.Population.Ratio.Men
+employed_black_ratio_women = labor_data$Data.Employed.Black.or.African.American.Employment.Population.Ratio.Women
+years = labor_data$Time.Year
+
+plot_data = data.frame(years, employed_black_ratio_men, employed_black_ratio_women)
+
+ggplot(plot_data, aes(x = years)) +
+  geom_line(aes(y = employed_black_ratio_men, colour = "Black or African American Men")) +
+  geom_line(aes(y = employed_black_ratio_women, colour = "Black or African American Women")) +
+  labs(x = "Year", y = "Employment-Population Ratio (%)", 
+       title = "Employment-Population Ratio Comparison: Black or African American Men vs Women") +
+  scale_colour_manual("", 
+                      breaks = c("Black or African American Men", "Black or African American Women"),
+                      values = c("blue", "red")) +
+  theme_minimal()
+```
 

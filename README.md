@@ -56,20 +56,20 @@ ggplot(plot_data, aes(x = years)) +
 ```
 
 ```{r, echo=FALSE}
-correlation_coefficient = cor(employed_black_ratio_women, Time.Year)
-degrees_freedom = nrow(plot_data)
-alpha = 0.05
-t_stat = (correlation_coefficent *sqrt(degrees_freedom)/sqrt(1-correlation_coefficent^2))
-upper_limit = qt(1- alpha/2, degrees_freedom)
-lower_limit = upper_limit
-results = tibble(
-t_stat = t_stat,
-upper_limit = upper_limit,
-lower_limit = lower_limit,
-reject_null_hypothesis = case_when(
-t_stat > upper_limit | t_stat < lower_limit ~ TRUE,
-TRUE ~ FALSE))
-print(results_tibble)
+black_lm <- lm(employed_black_ratio_women ~ years, data = w_men_data)
+
+black_summary_table <- summary(black_lm)
+
+black_t_test_statistic <- black_summary_table$coefficients[2, "t value"]
+black_p_value <- black_summary_table$coefficients[2, "Pr(>|t|)"]
+
+alpha <- 0.05
+
+if (black_p_value < alpha) {
+  cat("Reject the null hypothesis\n")
+} else {
+  cat("Fail to reject the null hypothesis\n")
+}
 ```
 
 w_men_data = read.csv("../data/labor.csv")
@@ -96,20 +96,20 @@ employment_graph
 
 ```
 ```{r, echo=FALSE}
-2correlation_coefficient = cor(Data.Employed.White.Employment-Population Ratio.Women, Time.Year)
-2degrees_freedom = nrow(employment_data)
-2alpha = 0.05
-2t_stat = (2correlation_coefficent *sqrt(2degrees_freedom)/sqrt(1-2correlation_coefficent^2))
-2upper_limit = qt(1- 2alpha/2, 2degrees_freedom)
-2lower_limit = 2upper_limit
-results = tibble(
-t_stat = t_stat,
-2upper_limit = 2upper_limit,
-2lower_limit = 2lower_limit,
-reject_null_hypothesis = case_when(
-2t_stat > 2upper_limit | 2t_stat < 2lower_limit ~ TRUE,
-TRUE ~ FALSE))
-print(results_tibble)
+white_lm <- lm(Data.Employed.White.Employment.Population.Ratio.Women ~ Time.Year, data = w_men_data)
+
+white_summary_table <- summary(white_lm)
+
+white_t_test_statistic <- white_summary_table$coefficients[2, "t value"]
+white_p_value <- white_summary_table$coefficients[2, "Pr(>|t|)"]
+
+alpha <- 0.05
+
+if (white_p_value < alpha) {
+  cat("Reject the null hypothesis\n")
+} else {
+  cat("Fail to reject the null hypothesis\n")
+}
 ```
 
 > The graph depicts the employment trends for white men and women over the past 50 years, showing a consistent increase in employment for both groups. While white men's employment remains higher, both trends parallel each other, indicating proportional growth without a closing gap.

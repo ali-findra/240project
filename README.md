@@ -72,6 +72,7 @@ if (black_p_value < alpha) {
 }
 ```
 
+```{r, echo=FALSE}
 w_men_data = read.csv("../data/labor.csv")
 
 recent_data = w_men_data %>%
@@ -93,8 +94,8 @@ employment_graph = ggplot(employment_data, aes(x = Time.Year, y = Employment, co
   theme_minimal()
 
 employment_graph
-
 ```
+
 ```{r, echo=FALSE}
 white_lm <- lm(Data.Employed.White.Employment.Population.Ratio.Women ~ Time.Year, data = w_men_data)
 

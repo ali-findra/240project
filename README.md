@@ -37,6 +37,7 @@ Some focus:
 Our first focus is the trend of total employment rate for white male vs. female over time. We also tries to see the differnce btw. the black male and female employment rate differnce over the past few decades. Our second focus is on trying to prove the hypothes of that, " What is the rate of the population over 40 is unemployed. 
 
 This is the ratio, the employments counts is the major part, this is just my extension explanation.
+
 ```{r, echo=FALSE}
 employed_black_ratio_men = labor_data$Data.Employed.Black.or.African.American.Employment.Population.Ratio.Men
 employed_black_ratio_women = labor_data$Data.Employed.Black.or.African.American.Employment.Population.Ratio.Women
@@ -56,7 +57,7 @@ ggplot(plot_data, aes(x = years)) +
 ```
 
 ```{r, echo=FALSE}
-black_lm <- lm(employed_black_ratio_women ~ years, data = w_men_data)
+black_lm <- lm(Data.Employed.Black.or.African.American.Employment.Population.Ratio.Women ~ Time.Year, data = w_men_data)
 
 black_summary_table <- summary(black_lm)
 

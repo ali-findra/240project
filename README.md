@@ -114,6 +114,12 @@ if (white_p_value < alpha) {
 }
 ```
 
+1. First we create a line that fits a linear model (lm) where the employment ratio for women of each race is regressed against the variable Time.Year using the dataset w_men_data. $\overline{y} = (a) + (b) * x$.
+2. Next, we generate a summary table for the linear model fitted in the previous step.
+3. Then we extract the t-test statistic associated with the coefficient for Time.Year from the summary table using the formula $t = \frac{\overline{x} - \mu}{\frac{s}{\sqrt{n}}}$.
+4. Then we extract the p-value statistic associated with the coefficient for Time.Year from the summary table using the formula $z = \frac{x - \mu}{\delta}$ .
+5. Finally we set the significance level or $\alpha$ to 0.05 and check whether the p-value is less than alpha. If true, it prints "Reject the null hypothesis", meaning the hypothesis is $TRUE$. Otherwise, it prints "Fail to reject the null hypothesis" meaning the hypothesis is $TRUE \sim FALSE$
+
 > The graph depicts the employment trends for white men and women over the past 50 years, showing a consistent increase in employment for both groups. While white men's employment remains higher, both trends parallel each other, indicating proportional growth without a closing gap.
 
 (Franco)

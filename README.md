@@ -152,6 +152,46 @@ ggplot(plot_data_long, aes(x = Year, y = Unemployment_Counts, fill = Gender)) +
 > The graph illustrates the unemployment trends for white men and women over the past 50 years. The areas filled with two distinct colors represent each gender, showing how their unemployment counts have changed over time. Sharp changes in the areas indicate significant economic events, and the dominance of one color in certain periods highlights which gender was more affected by unemployment. This visualization provides a clear comparison of how economic conditions have differently impacted the employment of white men and women over the decades.
 
 
+employment_data = recent_data %>%
+  select(Time.Year, Data.Employed.White.Counts.Men, Data.Employed.White.Counts.Women) %>%
+  pivot_longer(cols = c(Data.Employed.White.Counts.Men, Data.Employed.White.Counts.Women), 
+               names_to = "Status", values_to = "Counts") %>%
+  mutate(Status = recode(Status, 
+                         "Data.Employed.White.Counts.Men" = "Employed Men", 
+                         "Data.Employed.White.Counts.Women" = "Employed Women"),
+         Type = "Employment") 
+
+
+unemployment_data = recent_data %>%
+  select(Time.Year, Data.Unemployed.White.Counts.Men, Data.Unemployed.White.Counts.Women) %>%
+  pivot_longer(cols = c(Data.Unemployed.White.Counts.Men, Data.Unemployed.White.Counts.Women), 
+               names_to = "Status", values_to = "Counts") %>%
+  mutate(Status = recode(Status, 
+                         "Data.Unemployed.White.Counts.Men" = "Unemployed Men", 
+                         "Data.Unemployed.White.Counts.Women" = "Unemployed Women"),
+         Type = "Unemployment") # Add the Type variable for Unemployment
+
+
+combined_data = rbind(employment_data, unemployment_data)
+
+
+facet_grid_graph = ggplot(combined_data, aes(x = Time.Year, y = Counts, color = Status)) +
+  geom_line() +
+  facet_grid(rows = vars(Type)) +
+  scale_color_manual(values = c("Employed Men" = "blue", "Employed Women" = "red", 
+                                "Unemployed Men" = "orange", "Unemployed Women" = "green")) +
+  labs(title = "Employment and Unemployment Trends for White Men and Women (Last 50 Years)",
+       x = "Year", y = "Counts") +
+  theme_minimal()
+
+facet_grid_graph
+
+> The graph provides a clear visualization of employment and unemployment trends for white men and women over the past 50 years, showcasing distinct lines for each category. It highlights how these trends have evolved, revealing periods of economic change and stability, and offers a comparative view of the job market's impact on both genders.
+
+
+
+
+
 Lastly, we want to test the hypothesis whehter if there is no significant difference in the employment-population ratio between Black or African American men and women in the United States over the years.
 #### 1. data
 ```{r, echo=FALSE}

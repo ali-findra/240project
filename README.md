@@ -163,7 +163,7 @@ if (t_test_result$p.value < 0.05) {
   cat("Fail to reject the null hypothesis. There is no significant difference in employment-population ratio.\n")
 }
 ```
-1. First we create a line that fits a linear model (lm) where the employment ratio for women of each race is regressed against the variable Time.Year using the dataset w_men_data. $\overline{y} = (a) + (b) * x$.
+1. First we create a line that fits a linear model (lm) where the employment ratio for women of each race is regressed against the variable Time.Year using the dataset labor_data. $\overline{y} = (a) + (b) * x$.
 2. Next, we generate a summary table for the linear model fitted in the previous step.
 3. Then we extract the t-test statistic associated with the coefficient for Time.Year from the summary table using the formula $t = \frac{\overline{x} - \mu}{\frac{s}{\sqrt{n}}}$.
 4. Then we extract the p-value statistic associated with the coefficient for Time.Year from the summary table using the formula $z = \frac{x - \mu}{\delta}$ .
@@ -182,8 +182,8 @@ Our project provides valuable insights into the changing employment landscape fo
 (Franco)
 
 
-latest_year = max(w_men_data$Time.Year)
-filtered_data = subset(w_men_data, Time.Year > (latest_year - 50))
+latest_year = max(labor_data$Time.Year)
+filtered_data = subset(labor_data, Time.Year > (latest_year - 50))
 
 plot_data = filtered_data[, c('Time.Year', 'Data.Unemployed.White.Counts.Men', 'Data.Unemployed.White.Counts.Women')]
 

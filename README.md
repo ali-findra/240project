@@ -130,7 +130,7 @@ Based on the graph, we find out that the although white women's employment count
 
 
 Lastly, we want to test the hypothesis whehter if there is no significant difference in the employment-population ratio between Black or African American men and women in the United States over the years.
-#### 1. data
+#### 1. Data
 ```{r, echo=FALSE}
 filtered_data = labor_data %>% 
   filter(Time.Year >= 1970 & Time.Year <= 2016)
@@ -140,7 +140,7 @@ t_test_result = t.test(employed_black_men, employed_black_women)
 print(t_test_result)
 ```
 
-#### 2.model
+#### 2. Model
 ```{r, echo=FALSE}
 t_test_result <- t.test(employed_black_men, employed_black_women)
 
@@ -163,11 +163,32 @@ if (t_test_result$p.value < 0.05) {
   cat("Fail to reject the null hypothesis. There is no significant difference in employment-population ratio.\n")
 }
 ```
-1. First we create a line that fits a linear model (lm) where the employment ratio for women of each race is regressed against the variable Time.Year using the dataset labor_data. $\overline{y} = (a) + (b) * x$.
-2. Next, we generate a summary table for the linear model fitted in the previous step.
-3. Then we extract the t-test statistic associated with the coefficient for Time.Year from the summary table using the formula $t = \frac{\overline{x} - \mu}{\frac{s}{\sqrt{n}}}$.
-4. Then we extract the p-value statistic associated with the coefficient for Time.Year from the summary table using the formula $z = \frac{x - \mu}{\delta}$ .
-5. Finally we set the significance level or $\alpha$ to 0.05 and check whether the p-value is less than alpha. If true, it prints "Reject the null hypothesis", meaning the hypothesis is $TRUE$. Otherwise, it prints "Fail to reject the null hypothesis" meaning the hypothesis is $TRUE \sim FALSE$
+
+Next, let's do the same with white men and women.
+
+#### Data, Model2, and Test
+
+```{r, echo=FALSE}
+filtered_data = labor_data %>% 
+  filter(Time.Year >= 1970 & Time.Year <= 2016)
+employed_white_men = filtered_data$Data.Employed.White.Counts.Men
+employed_white_women = filtered_data$Data.Employed.White.Counts.Women
+
+mean_diff_2 <- mean(employed_white_men) - mean(employed_white_women)
+sd_diff_2 <- sd(employed_white_men - employed_white_women)
+
+cat("1. Model: X ∼ Normal(μ =", round(mean_diff_2, 2), ", σ =", round(sd_diff_2, 2), ")\n")
+
+t_test_result_2 = t.test(employed_white_men, employed_white_women)
+
+cat("p-value:", format.pval(t_test_result_2$p.value), "\n")
+
+if (t_test_result$p.value < 0.05) {
+  cat("Reject the null hypothesis. There is a significant difference in employment-population ratio.\n")
+} else {
+  cat("Fail to reject the null hypothesis. There is no significant difference in employment-population ratio.\n")
+}
+```
 
 ### Discussion
 

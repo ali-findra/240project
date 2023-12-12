@@ -181,7 +181,7 @@ Our project provides valuable insights into the changing employment landscape fo
 
 (Franco)
 
-
+```{r setup, include=FALSE}
 latest_year = max(labor_data$Time.Year)
 filtered_data = subset(labor_data, Time.Year > (latest_year - 50))
 

@@ -180,3 +180,25 @@ Our project provides valuable insights into the changing employment landscape fo
 > The graph depicts the employment trends for white men and women over the past 50 years, showing a consistent increase in employment for both groups. While white men's employment remains higher, both trends parallel each other, indicating proportional growth without a closing gap.
 
 (Franco)
+
+
+latest_year = max(w_men_data$Time.Year)
+filtered_data = subset(w_men_data, Time.Year > (latest_year - 50))
+
+plot_data = filtered_data[, c('Time.Year', 'Data.Unemployed.White.Counts.Men', 'Data.Unemployed.White.Counts.Women')]
+
+names(plot_data) = c('Year', 'Unemployed_Men', 'Unemployed_Women')
+
+plot_data_long = pivot_longer(plot_data, cols = c(Unemployed_Men, Unemployed_Women), names_to = 'Gender', values_to = 'Unemployment_Counts')
+
+ggplot(plot_data_long, aes(x = Year, y = Unemployment_Counts, fill = Gender)) +
+  geom_area(alpha = 0.6, position = 'stack') +
+  scale_fill_manual(values = c('steelblue', 'salmon')) +
+  theme_minimal() +
+  labs(title = 'Trend of Unemployment Counts Between White Men and Women Over the Last 50 Years',
+       x = 'Year',
+       y = 'Unemployment Counts') +
+  theme(legend.title = element_blank())
+
+```
+> The graph illustrates the unemployment trends for white men and women over the past 50 years. The areas filled with two distinct colors represent each gender, showing how their unemployment counts have changed over time. Sharp changes in the areas indicate significant economic events, and the dominance of one color in certain periods highlights which gender was more affected by unemployment. This visualization provides a clear comparison of how economic conditions have differently impacted the employment of white men and women over the decades.

@@ -5,16 +5,16 @@ output: html_document
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE,
+                      warning = FALSE, error = TRUE, fig.height = 3)
 library(tidyverse)
 library(lubridate)
 library(kableExtra)
 library(broman)
-source("../../scripts/viridis.R")
-source("../../scripts/ggprob.R")
+source("~/Desktop/STAT 240/scripts/viridis.R")
+source("~/Desktop/STAT 240/scripts/ggprob.R")
+theme_set(theme_minimal())
 ```
-
-<br/>
 
 ## The Change of Black and White Employment Ratio and Counts
 
@@ -42,7 +42,7 @@ Our first focus is the trend of total employment rate for white male vs. female 
 
 First, we want to see the comparison of employment counts between Black or African American men and women over the years of 1970-2016, as per the data from the labor dataset. The blue line represents men, and the red line represents women. This visualization can provide insights into trends, disparities, or changes in employment patterns for these demographics over time.
 ```{r, echo=FALSE}
-labor_data = read.csv("../../data/labor.csv")
+labor_data = read.csv("~/Desktop/STAT 240/Data/labor.csv")
 
 employed_black_men = labor_data$Data.Employed.Black.or.African.American.Counts.Men
 employed_black_women = labor_data$Data.Employed.Black.or.African.American.Counts.Women
@@ -129,8 +129,31 @@ employment_graph
 Based on the graph, we find out that the although white women's employment counts also shows a great increase in trend in the past decades, white men's employment's rate is still much higher than women.
 
 
+
+```{r setup, include=FALSE}
+latest_year = max(labor_data$Time.Year)
+filtered_data = subset(labor_data, Time.Year > (latest_year - 50))
+
+plot_data = filtered_data[, c('Time.Year', 'Data.Unemployed.White.Counts.Men', 'Data.Unemployed.White.Counts.Women')]
+
+names(plot_data) = c('Year', 'Unemployed_Men', 'Unemployed_Women')
+
+plot_data_long = pivot_longer(plot_data, cols = c(Unemployed_Men, Unemployed_Women), names_to = 'Gender', values_to = 'Unemployment_Counts')
+
+ggplot(plot_data_long, aes(x = Year, y = Unemployment_Counts, fill = Gender)) +
+  geom_area(alpha = 0.6, position = 'stack') +
+  scale_fill_manual(values = c('steelblue', 'salmon')) +
+  theme_minimal() +
+  labs(title = 'Trend of Unemployment Counts Between White Men and Women Over the Last 50 Years',
+       x = 'Year',
+       y = 'Unemployment Counts') +
+  theme(legend.title = element_blank())
+```
+> The graph illustrates the unemployment trends for white men and women over the past 50 years. The areas filled with two distinct colors represent each gender, showing how their unemployment counts have changed over time. Sharp changes in the areas indicate significant economic events, and the dominance of one color in certain periods highlights which gender was more affected by unemployment. This visualization provides a clear comparison of how economic conditions have differently impacted the employment of white men and women over the decades.
+
+
 Lastly, we want to test the hypothesis whehter if there is no significant difference in the employment-population ratio between Black or African American men and women in the United States over the years.
-#### 1. Data
+#### 1. data
 ```{r, echo=FALSE}
 filtered_data = labor_data %>% 
   filter(Time.Year >= 1970 & Time.Year <= 2016)
@@ -140,7 +163,7 @@ t_test_result = t.test(employed_black_men, employed_black_women)
 print(t_test_result)
 ```
 
-#### 2. Model
+#### 2.model
 ```{r, echo=FALSE}
 t_test_result <- t.test(employed_black_men, employed_black_women)
 
@@ -164,31 +187,9 @@ if (t_test_result$p.value < 0.05) {
 }
 ```
 
-Next, let's do the same with white men and women.
 
-#### Data, Model2, and Test
 
-```{r, echo=FALSE}
-filtered_data = labor_data %>% 
-  filter(Time.Year >= 1970 & Time.Year <= 2016)
-employed_white_men = filtered_data$Data.Employed.White.Counts.Men
-employed_white_women = filtered_data$Data.Employed.White.Counts.Women
 
-mean_diff_2 <- mean(employed_white_men) - mean(employed_white_women)
-sd_diff_2 <- sd(employed_white_men - employed_white_women)
-
-cat("1. Model: X ∼ Normal(μ =", round(mean_diff_2, 2), ", σ =", round(sd_diff_2, 2), ")\n")
-
-t_test_result_2 = t.test(employed_white_men, employed_white_women)
-
-cat("p-value:", format.pval(t_test_result_2$p.value), "\n")
-
-if (t_test_result$p.value < 0.05) {
-  cat("Reject the null hypothesis. There is a significant difference in employment-population ratio.\n")
-} else {
-  cat("Fail to reject the null hypothesis. There is no significant difference in employment-population ratio.\n")
-}
-```
 
 ### Discussion
 
@@ -197,29 +198,3 @@ In our exploration of employment patterns among Black and White American populat
 There are two short comings in the future for our project. First, since the data set comprises 63 observations, it provids a foundation for analysis but potentially limiting the generalizability of findings. The second short coming is that based on our analysis, we focused on factors exhibiting strong patterns, potentially overlooking nuances present in weaker patterns. Exploring additional factors could unveil more insights by this way.The future directions for our project are mainly focused in two ways. First is by explore Racial and Gender Wage Gaps and the second way is to do more qualitative and quantitative researches.
 
 Our project provides valuable insights into the changing employment landscape for Black and White American populations through the recent years. While the data set has limitations, our findings contribute to understanding the dynamics of gender disparities in employment counts. Future research avenues include exploring additional factors, comparing wage gaps by ages, and to do more qualitative an quantitative researches.
-
-> The graph depicts the employment trends for white men and women over the past 50 years, showing a consistent increase in employment for both groups. While white men's employment remains higher, both trends parallel each other, indicating proportional growth without a closing gap.
-
-(Franco)
-
-```{r setup, include=FALSE}
-latest_year = max(labor_data$Time.Year)
-filtered_data = subset(labor_data, Time.Year > (latest_year - 50))
-
-plot_data = filtered_data[, c('Time.Year', 'Data.Unemployed.White.Counts.Men', 'Data.Unemployed.White.Counts.Women')]
-
-names(plot_data) = c('Year', 'Unemployed_Men', 'Unemployed_Women')
-
-plot_data_long = pivot_longer(plot_data, cols = c(Unemployed_Men, Unemployed_Women), names_to = 'Gender', values_to = 'Unemployment_Counts')
-
-ggplot(plot_data_long, aes(x = Year, y = Unemployment_Counts, fill = Gender)) +
-  geom_area(alpha = 0.6, position = 'stack') +
-  scale_fill_manual(values = c('steelblue', 'salmon')) +
-  theme_minimal() +
-  labs(title = 'Trend of Unemployment Counts Between White Men and Women Over the Last 50 Years',
-       x = 'Year',
-       y = 'Unemployment Counts') +
-  theme(legend.title = element_blank())
-
-```
-> The graph illustrates the unemployment trends for white men and women over the past 50 years. The areas filled with two distinct colors represent each gender, showing how their unemployment counts have changed over time. Sharp changes in the areas indicate significant economic events, and the dominance of one color in certain periods highlights which gender was more affected by unemployment. This visualization provides a clear comparison of how economic conditions have differently impacted the employment of white men and women over the decades.

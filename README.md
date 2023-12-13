@@ -191,25 +191,6 @@ Lastly, we want to test the hypothesis whehter if there is no significant differ
 
 ##### 1. Data
 
-- bar{x}: 11,233.83.
-- z: 1.96
-- sd: 3,331.89.
-- n: 528.
-
-##### 2. Model
-The hypothesis test can be modeled as follows, assuming a normal distribution based on the Central Limit Theorem (CLT) as n > 30.
-
-- Model: \( X \sim Normal(\mu, \frac{\sigma}{\sqrt{n}}) \)
-
-##### State Hypotheses
-In this context, let's define the null and alternative hypotheses:
-
-- H0: There is no significant difference in the employment-population ratio between men and women. 
-- H1: There is a significant difference in the employment-population ratio between men and women.
-
-##### 3. Test the Hypothesis
-Using the t-test result, we examine the p-value to decide whether to reject the null hypothesis.
-
 ```{r, echo=FALSE}
 filtered_data = labor_data %>% 
   filter(Time.Year >= 1970 & Time.Year <= 2016)
@@ -218,23 +199,58 @@ men = filtered_data$Data.Employed.Black.or.African.American.Counts.Men +
 women = filtered_data$Data.Employed.Black.or.African.American.Counts.Women + 
         filtered_data$Data.Employed.White.Counts.Women
 t_test_result = t.test(men, women)
-
-if (t_test_result$p.value < 0.05) {
-  cat("Reject the null hypothesis. There is a significant difference in employment-population ratio.\n")
-} else {
-  cat("Fail to reject the null hypothesis. There is no significant difference in employment-population ratio.\n")
-}
+cat("p-value:", t_test_result$p.value, "\n")
+print(t_test_result)
 ```
 
-##### 4. Calculation and the Result
+- mean difference(\( \bar{x} \)): 11,233.83.
+- z(z-score): 1.96
+- sd(standard deviation): 3,331.89.
+- n(sample size): 528
+- p-value: 2.2e-16
+
+##### 2. Model
+The hypothesis test can be modeled as follows, assuming a normal distribution based on the Central Limit Theorem (CLT) as n > 30.
+
+- Model: \( X \sim Normal(\mu, \frac{\sigma}{\sqrt{n}}) \)
+
+
+##### State Hypotheses
+In this context, let's define the null and alternative hypotheses:
+
+
+- Null Hypothesis (\(H_0\)): \( \mu_{men} = \mu_{women} \)
+  - This states that there is no significant difference in the employment-population ratios between men and women.
+
+- Alternative Hypothesis (\(H_1\)): \( \mu_{men} \neq \mu_{women} \)
+  - This states that there is a significant difference in the employment-population ratios between men and women.
+
+##### 3. Calculation
 The confidence interval can be calculated using the formula:
 
 \[ CI = \bar{x} \pm z \times \frac{s}{\sqrt{n}} \]
 
 The 95% confidence interval for the mean difference between the employment counts of men and women is approximately:
 
-- Lower: 10,949.63
-- Upper: 11,518.02
+- Lower Bound: 10,949.63
+- Upper Bound: 11,518.02
+
+Plugging in the values:
+
+- Margin of Error = \( 1.96 \times \frac{3331.89}{\sqrt{528}} \)
+- Lower Bound = \( 11233.83 - \text{Margin of Error} \)
+- Upper Bound = \( 11233.83 + \text{Margin of Error} \)
+
+##### 4. Test the Hypothesis
+Using the t-test result, we examine the p-value to decide whether to reject the null hypothesis.
+
+```{r, echo=FALSE}
+if (t_test_result$p.value < 0.05) {
+  cat("Reject the null hypothesis. There is a significant difference in employment-population ratio.\n")
+} else {
+  cat("Fail to reject the null hypothesis. There is no significant difference in employment-population ratio.\n")
+}
+```
 
 Finally, by comparing this to the null hypothesis, we can see that the entire confidence interval is far above zero. This further supports the decision to reject the null hypothesis, indicating a significant difference in employment-population ratios between men and women in this dataset.
 
